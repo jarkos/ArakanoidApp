@@ -11,18 +11,28 @@ import android.widget.Button;
 
 public class MainActivity extends ActionBarActivity {
     Button btn;
+    Button btnExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btn = (Button) findViewById(R.id.button);
+        btnExit = (Button) findViewById(R.id.button2);
         btn.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View view)
             {
                 Intent myIntent = new Intent(MainActivity.this, GameActivity.class);
                 MainActivity.this.startActivity(myIntent);
+            }
+        });
+
+        btnExit.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                finish();
             }
         });
     }
