@@ -3,6 +3,7 @@ package com.example.jarek.arakanoidapp;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -21,6 +22,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     public Paddle paddle;
     private GameThread th;
     public Ball ball;
+    private int lives = 3;
 
     public MainGamePanel(Context context)
     {
@@ -61,11 +63,31 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public void render(Canvas canvas)
     {
-        canvas.drawColor(Color.BLUE);
-        for (Block block : listOfBlocks)
-            block.paintBrick(canvas);
-        ball.drawBall(canvas);
-        paddle.draw(canvas);
+        if (listOfBlocks.isEmpty())
+        {
+            Paint p = new Paint();
+            p.setColor(Color.WHITE);
+            canvas.drawText("YOU WIN", this.getWidth() / 4, this.getHeight() / 2 - 40, p);
+            th.setRunning(false);
+        }
+        else if(lives<=0)
+        {
+            Paint p = new Paint();
+            p.setColor(Color.WHITE);
+            canvas.drawText("YOU LOSE", this.getWidth() / 4, this.getHeight() / 2 - 40, p);
+            th.setRunning(false);
+        }
+        else
+        {
+
+            canvas.drawColor(Color.BLUE);
+            for (Block block : listOfBlocks)
+                block.paintBrick(canvas);
+            ball.drawBall(canvas);
+            paddle.draw(canvas);
+
+        }
+
     }
 
     public void update()
@@ -78,6 +100,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             if (ball.IsOutOfPanel)
             {
                 ball = new Ball(this);
+                lives-=1;
             }
         }
     }
@@ -88,7 +111,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
         {
             paddle.onTouch = true;
-            if (event.getX() * 2 < getWidth()) //jak jest sterowanie paletka
+            if (event.getX() * 2 < getWidth())
                 paddle.left = true;
             else
                     paddle.left = false;
