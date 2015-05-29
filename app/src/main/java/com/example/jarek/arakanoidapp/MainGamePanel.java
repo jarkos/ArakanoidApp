@@ -15,10 +15,10 @@ import java.util.List;
 
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
-    private List<Block> listOfBlocks;
+    public List<Block> listOfBlocks;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
-    private Paddle paddle;
+    public Paddle paddle;
     private GameThread th;
 
     public MainGamePanel(Context context)
