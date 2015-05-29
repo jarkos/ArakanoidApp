@@ -20,6 +20,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private SurfaceHolder surfaceHolder;
     public Paddle paddle;
     private GameThread th;
+    public Ball ball;
 
     public MainGamePanel(Context context)
     {
@@ -43,6 +44,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         paddle = new Paddle(getWidth(), getHeight() - 50);
        // this.render(canvas);
        // surfaceHolder.unlockCanvasAndPost(canvas);
+        ball = new Ball(this);
     }
 
     @Override
@@ -62,12 +64,22 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         canvas.drawColor(Color.BLUE);
         for (Block block : listOfBlocks)
             block.paintBrick(canvas);
+        ball.drawBall(canvas);
         paddle.draw(canvas);
     }
 
     public void update()
     {
         paddle.update(getWidth());
+        if (!listOfBlocks.isEmpty())
+        {
+            paddle.update(getWidth());
+            ball.update(getWidth(), getHeight());
+            if (ball.IsOutOfPanel)
+            {
+                ball = new Ball(this);
+            }
+        }
     }
 
     @Override
